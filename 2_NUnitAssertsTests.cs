@@ -35,7 +35,7 @@ namespace UnitTestingDemoApplication.Tests
         }
 
         [Test]
-        public void ShouldNotBeNegatibe()
+        public void ShouldNotBeNegative()
         {
             Assert.That(1 + 1, Is.Not.Negative);
         }
@@ -114,9 +114,9 @@ namespace UnitTestingDemoApplication.Tests
         [Test]
         public void ShouldNotAllBeEmpty()
         {
-            var sut = new List<string> { "hello", "world", "3" };
+            var sut = new List<string> { "hello", "world", "3"};
 
-            sut.Add("new item");
+            // sut.Add(string.Empty);
 
             Assert.That(sut, Is.All.Not.Empty);
         }
@@ -126,7 +126,7 @@ namespace UnitTestingDemoApplication.Tests
         {
             var sut = new List<string> { "hello", "world", "3" };
 
-            sut.Add("new item");
+            // sut.Remove("hello");
 
             Assert.That(sut, Has.Some.Contains("ell"));
         }
@@ -136,9 +136,9 @@ namespace UnitTestingDemoApplication.Tests
         {
             var sut = new List<string> { "hello", "world", "3" };
 
-            sut.Add("new item");
+            sut.Add("Highway to Hell");
 
-            Assert.That(sut, Has.Exactly(2).Contains('o'));
+            Assert.That(sut, Has.Exactly(2).Contains("ell"));
         }
 
         [Test]
@@ -167,12 +167,12 @@ namespace UnitTestingDemoApplication.Tests
         public void ShouldBeEquivalent()
         {
             var sut = new List<string> { "hello", "world", "3" };
-            var otherList = new List<string> { "hello", "new item", "world", "3" };
+            var otherCollection = new ArrayList { "hello", "new item", "world", "3" };
 
             sut.Add("new item");
-            //sut.Add("3");
+            // otherCollection.Add("3");
 
-            Assert.That(sut, Is.EquivalentTo(otherList));
+            Assert.That(sut, Is.EquivalentTo(otherCollection));
         }
 
         [Test]
@@ -182,19 +182,19 @@ namespace UnitTestingDemoApplication.Tests
 
             sut.Sort();
 
-            Assert.That(sut, Is.Ordered);
+            Assert.That(sut, Is.Ordered/*.Ascending*/);
         }
 
         // Reference equality
         [Test]
-        public void ShouldNotBeSame()
+        public void ShouldBeSame()
         {
             var sut1 = new int[10];
             var sut2 = new int[10];
 
             sut1 = sut2;
 
-            Assert.That(sut1, Is.Not.SameAs(sut2));
+            Assert.That(sut1, Is.SameAs(sut2));
         }
 
         // Types
@@ -227,17 +227,17 @@ namespace UnitTestingDemoApplication.Tests
         [Test]
         public void ShouldThrowException()
         {
-            var sut = Task.Run(() => throw new Exception());
+            var sut = Task.Run(() => throw new ArgumentException());
 
             Assert.That(sut.Wait, Throws.Exception);
         }
 
         [Test]
-        public void ShouldThrowAggregateException()
+        public void ShouldThrowArgumentException()
         {
             var sut = Task.Run(() => throw new ArgumentException());
 
-            Assert.That(sut.Wait, Throws.TypeOf<ArgumentException>());
+            Assert.That(sut.Wait, Throws.TypeOf<Exception>());
             //Assert.That(sut.Wait, Throws.TypeOf<AggregateException>());
         }
 
@@ -246,7 +246,7 @@ namespace UnitTestingDemoApplication.Tests
         {
             var sut = new Action(() => throw new ArgumentException("Wrong argument passed"));
 
-            Assert.That(sut.Invoke, Throws.TypeOf<ArgumentException>().With.Matches<ArgumentException>(e => e.Message == "Wrong argument passed!"));
+            Assert.That(sut.Invoke, Throws.TypeOf<ArgumentException>().With.Matches<ArgumentException>(e => e.Message == "Wrong argument passed"));
         }
     }
 }
