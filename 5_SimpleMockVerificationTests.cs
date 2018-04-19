@@ -67,7 +67,7 @@ namespace UnitTestingDemoApplication.Tests
             var valuesToInsert = new List<string> {"hello", "world", "3"};
             _sut.AddRange(valuesToInsert);
 
-            _mockIEnumerable.Verify(x => x.Add(It.IsAny<string>()), Times.Exactly(valuesToInsert.Length));
+            _mockIEnumerable.Verify(x => x.Add(It.IsAny<string>()), Times.Exactly(valuesToInsert.Count));
         }
     }
 }
