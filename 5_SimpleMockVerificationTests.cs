@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 
@@ -63,7 +64,7 @@ namespace UnitTestingDemoApplication.Tests
         [Test]
         public void ShouldAddRange()
         {
-            string[] valuesToInsert = {"hello", "world", "3"};
+            var valuesToInsert = new List<string> {"hello", "world", "3"};
             _sut.AddRange(valuesToInsert);
 
             _mockIEnumerable.Verify(x => x.Add(It.IsAny<string>()), Times.Exactly(valuesToInsert.Length));
