@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using Moq;
 using NUnit.Framework;
 
@@ -6,27 +7,27 @@ namespace UnitTestingDemoApplication.Tests
 {
     public class DemoServiceWithDependency
     {
-        private readonly IList<string> _iList;
+        private readonly IList _iList;
 
-        public DemoServiceWithDependency(IList<string> iList)
+        public DemoServiceWithDependency(IList iList)
         {
             _iList = iList;
         }
 
-        public void Insert(string content, int position = 0)
+        public int Add(object content)
         {
-            _iList.Insert(position, content);
+            return _iList.Add(content);
         }
 
-        public void InsertRange(IEnumerable<string> content)
+        public void AddRange(IList content)
         {
-            foreach (string s in content)
+            foreach (var item in content)
             {
-                _iList.Insert(_iList.Count, s);
+                _iList.Add(item);
             }
         }
 
-        public bool Contains(string subString)
+        public bool Contains(object subString)
         {
             return _iList.Contains(subString);
         }
@@ -41,31 +42,31 @@ namespace UnitTestingDemoApplication.Tests
     public class SimpleMockVerificationTests
     {
         private DemoServiceWithDependency _sut;
-        private Mock<IList<string>> _mockIEnumerable;
+        private Mock<IList> _mockIEnumerable;
 
         [SetUp]
         public void Init()
         {
-            _mockIEnumerable = new Mock<IList<string>>();
-            _mockIEnumerable.Setup(x => x.Insert(It.IsAny<int>(), It.IsAny<string>()));
+            _mockIEnumerable = new Mock<IList>();
+            _mockIEnumerable.Setup(x => x.Add(It.IsAny<object>()));
             _sut = new DemoServiceWithDependency(_mockIEnumerable.Object);
         }
 
         [Test]
         public void ShouldPassSimpleVerification()
         {
-            _sut.Insert("hello");
+            _sut.Add(DateTime.Now);
 
-            _mockIEnumerable.Verify();
+            _mockIEnumerable.Verify(x => x.Add(It.IsAny<DateTime>()));
         }
 
         [Test]
         public void ShouldAddRange()
         {
             string[] valuesToInsert = {"hello", "world", "3"};
-            _sut.InsertRange(valuesToInsert);
+            _sut.AddRange(valuesToInsert);
 
-            _mockIEnumerable.Verify(x => x.Insert(It.IsAny<int>(), It.IsAny<string>()), Times.Exactly(valuesToInsert.Length));
+            _mockIEnumerable.Verify(x => x.Add(It.IsAny<string>()), Times.Exactly(valuesToInsert.Length));
         }
     }
 }
