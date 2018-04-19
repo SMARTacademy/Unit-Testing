@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
+using System.Collections;
 
 namespace UnitTestingDemoApplication.Tests
 {
@@ -10,29 +10,35 @@ namespace UnitTestingDemoApplication.Tests
         [Test]
         public void ShouldNotContain()
         {
-            var mockIEnumerable = new Mock<IList<string>>();
-            mockIEnumerable.Setup(x =>
-                x.Contains(It.IsAny<string>())).Returns(() => false);
-            var sut = new DemoServiceWithDependency(mockIEnumerable.Object);
+            var _mockIlist = new Mock<IList>();
+            _mockIlist.Setup(x =>
+                x.Contains(It.IsAny<string>())).Returns(false);
+            var sut = new DemoServiceWithDependency(_mockIlist.Object);
 
-            var result = sut.Contains("I am not out there!");
+            var tricky = "I am not out there!";
+
+            sut.Add(tricky);
+            var result = sut.Contains(tricky);
+
             Assert.That(result, Is.EqualTo(false));
         }
 
         [Test]
         public void ShouldReturnDifferentValues()
         {
-            var mockIEnumerable = new Mock<IList<string>>();
+            var _mockIlist = new Mock<IList>();
             bool contains = false;
-            mockIEnumerable.Setup(x =>
+            _mockIlist.Setup(x =>
                     x.Contains(It.IsAny<string>()))
                 .Returns(() => contains)
                 .Callback(() => contains = !contains);
             
-            var sut = new DemoServiceWithDependency(mockIEnumerable.Object);
+            var sut = new DemoServiceWithDependency(_mockIlist.Object);
 
-            sut.Contains("test value");
-            mockIEnumerable.Verify();
+            var result = sut.Contains("test value");
+            Assert.That(result, Is.EqualTo(false));
+
+            _mockIlist.Verify();
         }
     }
 }
