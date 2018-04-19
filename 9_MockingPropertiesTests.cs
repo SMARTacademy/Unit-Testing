@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
+using System.Collections;
 
 namespace UnitTestingDemoApplication.Tests
 {
@@ -10,13 +10,13 @@ namespace UnitTestingDemoApplication.Tests
         [Test]
         public void ShouldVerifyGet()
         {
-            var mockIEnumerable = new Mock<IList<string>>();
-            mockIEnumerable.Setup(x => x.Count).Returns(123);
-            var sut = new DemoServiceWithDependency(mockIEnumerable.Object);
+            var mockIlist = new Mock<IList>();
+            mockIlist.Setup(x => x.Count).Returns(123);
+            var sut = new DemoServiceWithDependency(mockIlist.Object);
 
             var length = sut.GetLength();
-            mockIEnumerable.VerifyGet(x=>x.Count);
-            //mockIEnumerable.VerifySet(x=>x.Count = It.IsAny<string>());
+            Assert.That(length, Is.EqualTo(123));
+            mockIlist.VerifyGet(x => x.Count);
         }
     }
 }

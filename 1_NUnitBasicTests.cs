@@ -10,7 +10,7 @@ namespace UnitTestingDemoApplication.Tests
         [Test]
         public void ShouldPass()
         {
-            Assert.IsTrue(1 == 1);
+            Assert.AreEqual(1, 1);
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace UnitTestingDemoApplication.Tests
         [Test]
         public void ShouldPassWithCustomAssert()
         {
-            CustomAssert.IsTrue(1 == 2);
+            CustomAssert.IsTrue(1 == 1);
         }
 
         [Test]
