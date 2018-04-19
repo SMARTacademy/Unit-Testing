@@ -32,7 +32,7 @@ namespace UnitTestingDemoApplication.Tests.Attributes
         [Test]
         public void ShouldBeLessThan4()
         {
-            Assert.That(_sut, Is.LessThan(4));
+            Assert.That(_sut, Is.LessThanOrEqualTo(20));
         }
 
         [OneTimeSetUp]
@@ -79,10 +79,10 @@ namespace UnitTestingDemoApplication.Tests.Attributes
         }
 
         [Test]
-        // [Ignore("For test purposses")]
+         //[Ignore("For test purposses")]
         public void ShouldBeLessThanFifty(
-            [Values(-2, 5, 10)] int num1,
-            [Values(-2, 5, 10)] int num2,
+            [Values(-2, -5, 10)] int num1,
+            [Values(-2, 5, -10)] int num2,
             [Values(-2, 5, 10)] int num3)
         {
             Assert.That(num1 * num2 * num3, Is.Not.GreaterThan(50));
@@ -111,6 +111,7 @@ namespace UnitTestingDemoApplication.Tests.Attributes
     public class TimeTests
     {
         [Test]
+        //[Repeat(2)]
         [MaxTime(400)]
         public void ShouldCompleteFor400Milliseconds()
         {
