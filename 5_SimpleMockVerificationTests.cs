@@ -43,14 +43,14 @@ namespace UnitTestingDemoApplication.Tests
     public class SimpleMockVerificationTests
     {
         private DemoServiceWithDependency _sut;
-        private Mock<IList> _mockIEnumerable;
+        private Mock<IList> _mockIlist;
 
         [SetUp]
         public void Init()
         {
-            _mockIEnumerable = new Mock<IList>();
-            _mockIEnumerable.Setup(x => x.Add(It.IsAny<object>()));
-            _sut = new DemoServiceWithDependency(_mockIEnumerable.Object);
+            _mockIlist = new Mock<IList>();
+            _mockIlist.Setup(x => x.Add(It.IsAny<object>()));
+            _sut = new DemoServiceWithDependency(_mockIlist.Object);
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace UnitTestingDemoApplication.Tests
         {
             _sut.Add(DateTime.Now);
 
-            _mockIEnumerable.Verify(x => x.Add(It.IsAny<DateTime>()));
+            _mockIlist.Verify(x => x.Add(It.IsAny<DateTime>()));
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace UnitTestingDemoApplication.Tests
             var valuesToInsert = new List<string> {"hello", "world", "3"};
             _sut.AddRange(valuesToInsert);
 
-            _mockIEnumerable.Verify(x => x.Add(It.IsAny<string>()), Times.Exactly(valuesToInsert.Count));
+            _mockIlist.Verify(x => x.Add(It.IsAny<string>()), Times.Exactly(valuesToInsert.Count));
         }
     }
 }
