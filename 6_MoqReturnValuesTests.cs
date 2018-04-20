@@ -28,15 +28,15 @@ namespace UnitTestingDemoApplication.Tests
         {
             var _mockIlist = new Mock<IList>();
             bool contains = false;
-            _mockIlist.Setup(x =>
-                    x.Contains(It.IsAny<string>()))
+            _mockIlist.Setup(x => x.Contains(It.IsAny<string>()))
                 .Returns(() => contains)
                 .Callback(() => contains = !contains);
             
             var sut = new DemoServiceWithDependency(_mockIlist.Object);
+            var result1 = sut.Contains("test value");
+            var result2 = sut.Contains("test value");
 
-            var result = sut.Contains("test value");
-            Assert.That(result, Is.EqualTo(false));
+            Assert.That(result1, Is.Not.EqualTo(result2));
 
             _mockIlist.Verify();
         }
